@@ -4,11 +4,14 @@ library(asteRisk)
 
 first_data <- readGPSNavigationRINEX(readline(prompt="Enter first RINEX file name: "))
 second_data <- readGPSNavigationRINEX(readline(prompt="Enter second RINEX file name: "))
-out_file <- file(readline(prompt="Enter output file name: "), open = 'a')
+out_file_name <- readline(prompt="Enter output file name: ")
 
 if(identical(first_data, second_data)) {
   print("Datoteke su identične")
+  stop("Execution halted: Files are identical.")
 }
+
+out_file <- file(out_file_name, open = 'a')
 
 identical_props <- function(first_array, second_array) {
   if(is.null(first_array) || is.null(second_array)) {
@@ -49,4 +52,3 @@ if(length(first_data[["messages"]]) == length(second_data[["messages"]])) {
   writeLines(c("RINEX files do not contain same number of messages!"), out_file)
 }
 close(out_file)
-
