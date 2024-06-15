@@ -2,9 +2,21 @@
 install.packages("asteRisk")
 library(asteRisk)
 
-first_data <- readGPSNavigationRINEX(readline(prompt="Enter first RINEX file name: "))
-second_data <- readGPSNavigationRINEX(readline(prompt="Enter second RINEX file name: "))
-out_file_name <- readline(prompt="Enter output file name: ")
+readline_default <- function(prompt, default) {
+  input <- readline(prompt)
+  
+  if (input == "" || is.null(input)) {
+    return(default)
+  } else {
+    return(input)
+  }
+}
+
+first_name <- readline_default("Enter first RINEX file name: ", 'data1.txt')
+first_data <- readGPSNavigationRINEX(first_name)
+second_name <- readline_default("Enter second RINEX file name: ", 'data2.txt')
+second_data <- readGPSNavigationRINEX(second_name)
+out_file_name <- readline_default("Enter output file name: ", 'out.txt')
 
 if(identical(first_data, second_data)) {
   print("Datoteke su identične")
@@ -52,3 +64,4 @@ if(length(first_data[["messages"]]) == length(second_data[["messages"]])) {
   writeLines(c("RINEX files do not contain same number of messages!"), out_file)
 }
 close(out_file)
+
